@@ -43,31 +43,23 @@ int main(int argc, char *argv[])
     serv_addr.sin_port = htons(portno);
     if (connect(sockfd,(struct sockaddr *) &serv_addr,sizeof(serv_addr)) < 0) 
         error("ERROR connecting");
-    while(1){//WHILE <---
-//----------------------------------------------------------------------------
+    while(1) {
     memset(message, 0, sizeof(message));
     memset(buf, 0, sizeof(buf));
     printf("Введите сообщение серверу(Для выхода:ctrl+C): "); 
     fgets(message, sizeof(message), stdin);
-    
-//----------------------------------------------------------------------------
  
-    printf("отправка сообщения на сервер...\n");
     send(sockfd, message, sizeof(message), 0); // отправка сообщения на сервер
     int bytes_read = 0;
-    printf("Ожидание сообщения\n");
-        while (1)
-        {
+        while (1) {
             bytes_read = recv(sockfd, buf, sizeof(buf), 0);
-            printf("BYTESREAD %d\n", bytes_read);
             if (strlen(buf) == 0)
             {
-                printf("FUCK\n");
                 break;
             }
             fwrite(buf, sizeof(char), bytes_read, stdout);// прием сообщения от сервера
         }
  
-    }//END_WHILE
+    }
     return 0;
 }
